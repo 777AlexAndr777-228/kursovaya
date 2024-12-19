@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление предложениями</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #6c4040;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .suggestion {
+            display: flex;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .suggestion img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .suggestion-info {
+            flex: 1;
+        }
+        .suggestion-info h2 {
+            margin-top: 0;
+            color: #6c4040;
+        }
+        .suggestion-info p {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+        .actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .actions button {
+            background-color: #6c4040;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .actions button:hover {
+            background-color: #5a3535;
+        }
+        .no-suggestions {
+            text-align: center;
+            font-size: 1.2em;
+            color: #6c4040;
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #6c4040;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Управление предложениями</h1>
+    <p>Просмотр и обработка предложений от пользователей</p>
+</header>
+
+<div class="container">
+    <h2>Предложения достопримечательностей</h2>
+    {% if suggestions %}
+    <ul>
+        {% for suggestion in suggestions %}
+        <li class="suggestion">
+            {% set filename = suggestion.name.replace(' ', '_') + '_' + suggestion.photo_path.split('_')[-1] %}
+            <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="{{ suggestion.name }}">
+            <div class="suggestion-info">
+                <h2>{{ suggestion.name }}</h2>
+                <p><strong>Описание:</strong> {{ suggestion.info }}</p>
+                <p><strong>Адрес:</strong> {{ suggestion.adress }}</p>
+                <p><strong>Контактная информация:</strong> {{ suggestion.contac_info }}</p>
+                <p><strong>Дополнительная информация:</strong> {{ suggestion.dop_info }}</p>
+            </div>
+            <div class="actions">
+                <form action="{{ url_for('approve_suggestion', suggestion_id=suggestion.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Одобрить</button>
+                </form>
+                <form action="{{ url_for('reject_suggestion', suggestion_id=suggestion.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Отклонить</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="no-suggestions">
+        <p>Новых предложений нет.</p>
+    </div>
+    {% endif %}
+</div>
+
+<footer>
+    <p>&copy; 2024 TravelGide. Все права защищены.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelGide: Калужская область</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #6c4040;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .attraction {
+            display: flex;
+            height: 200px;
+            margin-bottom: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .attraction:hover {
+            transform: scale(1.02);
+        }
+        .attraction img {
+            width: 300px;
+            height: auto;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+        .attraction-info {
+            padding: 20px;
+            width: 50%;
+        }
+        .attraction-info h2 {
+            margin-top: 0;
+        }
+        .attraction-info p {
+            line-height: 1.6;
+        }
+        footer {
+            background-color: #6c4040;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: 40px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #6c4040;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            color: white; /* Изменение цвета текста на белый */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            margin-right: 20px;
+        }
+        .auth-buttons a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .auth-buttons a:hover {
+            background-color: white;
+            color: #6c4040;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>TravelGide: Калужская область</h1>
+            <p>Откройте для себя сокровища русской природы и истории</p>
+        </div>
+        <div class="auth-buttons">
+            {% if 'user' in session %}
+            <a href="{{ url_for('logout') }}">Выход</a>
+            {% if session['user_status'] == 'admin' %}
+            <a href="{{ url_for('admin_suggestions') }}">Посмотреть предложения</a>
+            {% else %}
+            <a href="{{ url_for('suggest_sight') }}">Предложить достопримечательность</a>
+            {% endif %}
+            {% else %}
+            <a href="{{ url_for('register_form') }}">Зарегистрироваться</a>
+            <a href="{{ url_for('login') }}">Войти</a>
+            {% endif %}
+        </div>
+    </header>
+
+
+
+<div class="container">
+    {% for sight in sights %}
+    <div class="attraction" onclick="window.location.href='{{ url_for('sight_detail', sight_id=sight.id) }}'">
+        <img src="static/img/{{ sight.name }}.jpg" alt="{{ sight.name }}">
+        <div class="attraction-info">
+            <h2>{{ sight.name }}</h2>
+            <p>{{ sight.info }}</p>
+            <p>{{sight.adress}}</p>
+            <p>{{sight.contac_info}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<footer>
+    <p>&copy; 2024 TravelGide. Все права защищены.</p>
+</footer>
+
+</body>
+</html>

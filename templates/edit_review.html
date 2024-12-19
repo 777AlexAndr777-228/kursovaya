@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать отзыв</title>
+</head>
+<body>
+    <h1>Редактировать отзыв</h1>
+    <form action="{{ url_for('edit_review', review_id=review.id) }}" method="post">
+        <textarea name="review" rows="4" cols="50">{{ review.text }}</textarea>
+        <br>
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>
