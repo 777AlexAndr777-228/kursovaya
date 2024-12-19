@@ -264,6 +264,5 @@ correct_date = datetime(2025, 9, 23, 23, 9)  # Год, месяц, день, ч�
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
     port = int(os.environ.get('PORT', 5000))  # Используйте порт из Render или 5000 по умолчанию
     app.run(host='0.0.0.0', port=port, debug=True)
